@@ -593,4 +593,126 @@ end)
 })
 
 local CMDTab = Window:CreateTab("CMD", 111803568693179) -- Title, Image
-local CMDSection = CMDTab:CreateSection("EXPLOIT")
+local CMDSection = CMDTab:CreateSection("EXPLOIT CMD")
+
+local Button = CMDTab:CreateButton({
+   Name = "CARRY EXPLOIT MENU [NEED CARRY]",
+   Callback = function()
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local gui = player:WaitForChild("PlayerGui")
+
+-- Delete old GUI
+if gui:FindFirstChild("CarryCMD") then
+    gui.CarryCMD:Destroy()
+end
+
+-- ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "CarryCMD"
+screenGui.Parent = gui
+
+-- Main Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 180)
+frame.Position = UDim2.new(0.5,0,0.5,0)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundColor3 = Color3.fromRGB(0,0,0)
+frame.BorderSizePixel = 0
+frame.Parent = screenGui
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1,0,0,50)
+title.BackgroundTransparency = 1
+title.Text = "CARRY EXPLOIT [JIMYA]"
+title.TextColor3 = Color3.fromRGB(0,150,255)
+title.Font = Enum.Font.SourceSansBold
+title.TextScaled = true
+title.Parent = frame
+
+-- Command TextBox
+local cmdBox = Instance.new("TextBox")
+cmdBox.Size = UDim2.new(0.9,0,0,40)
+cmdBox.Position = UDim2.new(0.05,0,0,60)
+cmdBox.BackgroundColor3 = Color3.fromRGB(30,30,30)
+cmdBox.TextColor3 = Color3.fromRGB(0,150,255)
+cmdBox.PlaceholderText = "Type command (BringAll)..."
+cmdBox.Font = Enum.Font.SourceSans
+cmdBox.TextScaled = true
+cmdBox.ClearTextOnFocus = true
+cmdBox.Parent = frame
+
+-- Output Label
+local output = Instance.new("TextLabel")
+output.Size = UDim2.new(0.9,0,0.3,0)
+output.Position = UDim2.new(0.05,0,0,110)
+output.BackgroundTransparency = 1
+output.TextColor3 = Color3.fromRGB(0,150,255)
+output.TextWrapped = true
+output.Text = "Type 'BringAll' to bring everyone"
+output.Font = Enum.Font.SourceSans
+output.TextScaled = true
+output.Parent = frame
+
+-- Bring All Function
+local function bringAllPlayers()
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= player and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = plr.Character.HumanoidRootPart
+            local localHRP = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+            if localHRP then
+                hrp.CFrame = localHRP.CFrame * CFrame.new(0,0,5) -- sa harap ng player
+            end
+        end
+    end
+    output.Text = "✅ Brought all players!"
+end
+
+-- Execute command when Enter pressed
+cmdBox.FocusLost:Connect(function(enter)
+    if enter then
+        if cmdBox.Text:lower() == "bringall" then
+            bringAllPlayers()
+        else
+            output.Text = "❌ Invalid command!"
+        end
+        cmdBox.Text = ""
+    end
+end)
+
+-- Draggable Frame
+local UserInputService = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+   end,
+})
