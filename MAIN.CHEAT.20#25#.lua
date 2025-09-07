@@ -37,7 +37,7 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local MainTab = Window:CreateTab("Main[CHEAT]", nil) -- Title, Image
+local MainTab = Window:CreateTab("Main[CHEAT]", 111803568693179) -- Title, Image
 local MainSection = MainTab:CreateSection("Main")
 
 Rayfield:Notify({
@@ -54,7 +54,7 @@ local Button = MainTab:CreateButton({
    end
 })
 
-local TrollTab = Window:CreateTab("Troll", nil) -- Title, Image
+local TrollTab = Window:CreateTab("Troll", 111803568693179) -- Title, Image
 local TrollSection = TrollTab:CreateSection("MGA SCRIPT NG IYAKIN")
 
 local Button = TrollTab:CreateButton({
@@ -71,7 +71,7 @@ local Button = MainTab:CreateButton({
    end,
 })
 
-local MiscTab = Window:CreateTab("Misc", nil) -- Title, Image
+local MiscTab = Window:CreateTab("Misc", 111803568693179) -- Title, Image
 local MiscSection = MiscTab:CreateSection("IYAKIN MGA ADMIN NUHH HAHAHAHA")
 
 local Button = MainTab:CreateButton({
@@ -117,7 +117,7 @@ loadstring(game:HttpGet("https://pastebin.com/raw/GY1wfJRZ"))()
    end,
 })
 
-local FREEMAINCHEATTab = Window:CreateTab("FREEMAINCHEAT", nil) -- Title, Image
+local FREEMAINCHEATTab = Window:CreateTab("FREEMAINCHEAT", 111803568693179) -- Title, Image
 local FREEMAINCHEATSection = FREEMAINCHEATTab:CreateSection("FREEMAINCHEAT")
 
 local Button = FREEMAINCHEATTab:CreateButton({
@@ -468,7 +468,7 @@ end)
  end,
 })
 
-local GUNDUPETab = Window:CreateTab("GUN DUPE", nil) -- Title, Image
+local GUNDUPETab = Window:CreateTab("GUN DUPE", 111803568693179) -- Title, Image
 local GUNDUPESection = GUNDUPETab:CreateSection("GUN SHOP")
 
 local Button = GUNDUPETab:CreateButton({
@@ -476,93 +476,121 @@ local Button = GUNDUPETab:CreateButton({
    Callback = function()
        pcall(function()
            local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local player = Players.LocalPlayer
 local gui = player:WaitForChild("PlayerGui")
 
--- Remove old GUI
-if gui:FindFirstChild("GunDupeGUI") then
-    gui.GunDupeGUI:Destroy()
+-- Delete old CMD GUI kung meron
+if gui:FindFirstChild("GunShopCMD") then
+    gui.GunShopCMD:Destroy()
 end
 
--- ScreenGui
+-- Create ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "GunDupeGUI"
+screenGui.Name = "GunShopCMD"
 screenGui.Parent = gui
 
 -- Main Frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 300, 0, 200)
-frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-frame.BackgroundColor3 = Color3.fromRGB(40,40,40)
+frame.Size = UDim2.new(0, 400, 0, 200)
+frame.Position = UDim2.new(0.5,0,0.5,0)
+frame.AnchorPoint = Vector2.new(0.5,0.5)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BorderSizePixel = 0
 frame.Parent = screenGui
-frame.Active = true
-frame.Draggable = true
 
 -- Title
 local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1,0,0,30)
-title.Position = UDim2.new(0,0,0,0)
+title.Size = UDim2.new(1,0,0,50)
 title.BackgroundTransparency = 1
-title.Text = "GUN DUPE SHOP"
+title.Text = "GUN SHOP CMD"
 title.TextColor3 = Color3.fromRGB(255,255,255)
 title.Font = Enum.Font.SourceSansBold
 title.TextScaled = true
 title.Parent = frame
 
--- Input box for gun name
-local gunInput = Instance.new("TextBox")
-gunInput.Size = UDim2.new(0.8,0,0,30)
-gunInput.Position = UDim2.new(0.1,0,0,40)
-gunInput.PlaceholderText = "Type gun name here"
-gunInput.BackgroundColor3 = Color3.fromRGB(60,60,60)
-gunInput.TextColor3 = Color3.fromRGB(255,255,255)
-gunInput.ClearTextOnFocus = false
-gunInput.Parent = frame
+-- TextBox para sa commands
+local cmdBox = Instance.new("TextBox")
+cmdBox.Size = UDim2.new(0.9,0,0,40)
+cmdBox.Position = UDim2.new(0.05,0,0,60)
+cmdBox.BackgroundColor3 = Color3.fromRGB(50,50,50)
+cmdBox.TextColor3 = Color3.fromRGB(255,255,255)
+cmdBox.PlaceholderText = "Type gun name here..."
+cmdBox.Font = Enum.Font.SourceSans
+cmdBox.TextScaled = true
+cmdBox.ClearTextOnFocus = true
+cmdBox.Parent = frame
 
--- Buy/Spawn Button
-local spawnButton = Instance.new("TextButton")
-spawnButton.Size = UDim2.new(0.8,0,0,30)
-spawnButton.Position = UDim2.new(0.1,0,0,80)
-spawnButton.Text = "BUY GUN"
-spawnButton.BackgroundColor3 = Color3.fromRGB(80,80,80)
-spawnButton.TextColor3 = Color3.fromRGB(255,255,255)
-spawnButton.Font = Enum.Font.SourceSansBold
-spawnButton.TextScaled = true
-spawnButton.Parent = frame
+-- Output Text
+local output = Instance.new("TextLabel")
+output.Size = UDim2.new(0.9,0,0.5,0)
+output.Position = UDim2.new(0.05,0,0,110)
+output.BackgroundTransparency = 1
+output.TextColor3 = Color3.fromRGB(0,255,0)
+output.TextWrapped = true
+output.Text = "Type gun name and press Enter"
+output.Font = Enum.Font.SourceSans
+output.TextScaled = true
+output.Parent = frame
 
-spawnButton.MouseButton1Click:Connect(function()
-    local gunName = gunInput.Text
-    if gunName ~= "" then
-        local success, err = pcall(function()
-            -- Fire server para sa gun purchase (example)
-            -- Palitan depende sa gun shop RemoteEvent ng game
-            local gunShopEvent = ReplicatedStorage:WaitForChild("GunShop") -- sigurado nasa game
-            gunShopEvent:FireServer(gunName)
-        end)
-        if success then
-            print("Bought gun: "..gunName)
-        else
-            warn("Error buying "..gunName..": "..tostring(err))
+-- List of guns
+local guns = {"Pistol","UZI","HK416","Silenced Pistol","MEDKIT"}
+
+-- Function to spawn/buy gun
+local function giveGun(gunName)
+    for _, g in pairs(guns) do
+        if g:lower() == gunName:lower() then
+            output.Text = "Successfully bought/duped: "..g
+            print("Spawn gun:", g)
+            -- Dito mo ilalagay ang gun dupe/buy code
+            return
         end
+    end
+    output.Text = "❌ Invalid gun: "..gunName
+end
+
+-- Execute on Enter
+cmdBox.FocusLost:Connect(function(enter)
+    if enter then
+        giveGun(cmdBox.Text)
+        cmdBox.Text = ""
     end
 end)
 
--- Close Button
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0,30,0,30)
-closeButton.Position = UDim2.new(1,-35,0,5)
-closeButton.Text = "X"
-closeButton.BackgroundColor3 = Color3.fromRGB(150,50,50)
-closeButton.TextColor3 = Color3.fromRGB(255,255,255)
-closeButton.Font = Enum.Font.SourceSansBold
-closeButton.TextScaled = true
-closeButton.Parent = frame
+-- Draggable frame
+local UserInputService = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
 
-closeButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
+local function update(input)
+    local delta = input.Position - dragStart
+    frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
 end)
-       end)
+
+frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
    end,
 })
+
+local CMDTab = Window:CreateTab("CMD", 111803568693179) -- Title, Image
+local CMDSection = CMDTab:CreateSection("EXPLOIT")
